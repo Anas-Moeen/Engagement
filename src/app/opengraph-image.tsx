@@ -6,14 +6,19 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 /**
- * Fetches Amiri at build time so the share card uses the same Arabic display
- * face as the site. Falls back to the default face rather than failing the
- * build if the network is unavailable.
+ * Fetches IBM Plex Sans Arabic at build time — the site's body face — for the
+ * share card. Falls back to the default face rather than failing the build if
+ * the network is unavailable.
+ *
+ * Amiri (the site's display/heading face) is deliberately NOT used here:
+ * satori (the renderer behind `next/og`) can't shape its contextual ligature
+ * substitutions (GSUB lookupType 5, format 3) and crashes the prerender —
+ * see https://github.com/vercel/satori/issues for the underlying limitation.
  */
 async function arabicFont(): Promise<ArrayBuffer | null> {
   try {
     const css = await fetch(
-      'https://fonts.googleapis.com/css2?family=Amiri:wght@400&display=swap&subset=arabic',
+      'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400&display=swap&subset=arabic',
       { headers: { 'User-Agent': 'Mozilla/5.0' } },
     ).then((r) => r.text());
 
@@ -39,7 +44,7 @@ export default async function OpengraphImage() {
           alignItems: 'center',
           justifyContent: 'center',
           background: 'linear-gradient(160deg, #0B241C 0%, #123A2C 55%, #071812 100%)',
-          fontFamily: font ? 'Amiri' : 'serif',
+          fontFamily: font ? 'IBM Plex Sans Arabic' : 'serif',
           position: 'relative',
         }}
       >
@@ -85,7 +90,7 @@ export default async function OpengraphImage() {
     {
       ...size,
       fonts: font
-        ? [{ name: 'Amiri', data: font, style: 'normal' as const, weight: 400 as const }]
+        ? [{ name: 'IBM Plex Sans Arabic', data: font, style: 'normal' as const, weight: 400 as const }]
         : [],
     },
   );
