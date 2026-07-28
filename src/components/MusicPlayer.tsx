@@ -71,6 +71,14 @@ export function MusicPlayer() {
     const attempt = () => {
       if (autoTried.current || userStopped.current) return;
       el.muted = false;
+      /*
+       * A prior attempt (the immediate one below, or an earlier gesture that
+       * got interrupted) can leave the element stalled — some mobile browsers
+       * forcibly suspend "background" media to save power, which drops
+       * readyState back to 0 and leaves play() unable to resume cleanly.
+       * Reloading first forces a clean restart instead of silently failing.
+       */
+      if (el.error || el.readyState === 0) el.load();
       el.play()
         .then(() => {
           autoTried.current = true;
@@ -86,19 +94,7 @@ export function MusicPlayer() {
       attempt();
     }
 
-    /*
-     * Every browser allows *muted* autoplay unconditionally. Starting the
-     * track muted the instant the page loads means it is already decoded
-     * and playing in the background, so the first real gesture only has to
-     * flip `muted` off — instant, instead of also starting playback cold
-     * (which can stall for a beat on a slow connection).
-     */
-    el.muted = true;
-    el.play().catch(() => {
-      /* Even muted autoplay can be refused in rare embedding contexts —
-         the gesture-triggered attempt below still covers that case. */
-    });
-
+    attempt(); // step 1, straight away — succeeds outright on some desktops/returning visitors
     EVENTS.forEach((ev) => window.addEventListener(ev, onGesture, { passive: true }));
     return stopListening;
   }, []);
