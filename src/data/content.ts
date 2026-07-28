@@ -9,7 +9,7 @@
 /* ─────────────────────────── الروابط والنطاق ─────────────────────────── */
 
 export const siteUrl = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://your-domain.com'
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://anas-aya.com'
 ).replace(/\/$/, '');
 
 /* ─────────────────────────── العروسان ─────────────────────────── */
