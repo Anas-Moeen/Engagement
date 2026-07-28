@@ -94,7 +94,7 @@ export const media = {
     src: '/assets/audio/theme.mp3',
     title: 'مقطوعة الفرح',
     /** مستوى الصوت الافتراضي من ٠ إلى ١ */
-    defaultVolume: 0.37,
+    defaultVolume: 0.37 as number,
     /**
      * تشغيل الموسيقى تلقائياً عند أول لمسة من الزائر.
      * اجعله false ليبدأ الصوت فقط عند الضغط على زر التشغيل.
