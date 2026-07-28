@@ -125,6 +125,7 @@ export function MusicPlayer() {
       userStopped.current = false;
       autoTried.current = true;
       el.muted = false;
+      if (el.error || el.readyState === 0) el.load();
       el.play().catch(() => setPlaying(false));
     } else {
       userStopped.current = true;
@@ -137,12 +138,16 @@ export function MusicPlayer() {
       {/* Rendered once, unconditionally. Do not move this inside a branch. */}
       <audio
         ref={audioRef}
-        src={media.music.src}
         loop
         preload="none"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
-      />
+      >
+        {/* Declared explicitly: the host serves .mp3 as the non-standard
+            "audio/mp3" instead of "audio/mpeg", which stricter mobile
+            decoders can refuse to honor from the response header alone. */}
+        <source src={media.music.src} type="audio/mpeg" />
+      </audio>
 
       <div
         ref={panelRef}
@@ -239,7 +244,21 @@ export function MusicPlayer() {
             <motion.button
               key="disc"
               type="button"
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                setOpen(true);
+                /*
+                 * This tap is deliberately excluded from the page-wide
+                 * gesture listener above (so it can't immediately pause a
+                 * track that just started), which means it's otherwise the
+                 * one reliable, unambiguous "the visitor wants sound" click
+                 * on the page — scrolling to read the invite fires
+                 * touchstart too, but browsers don't treat a touch that
+                 * turns into a scroll as user activation for audio. So this
+                 * icon has to start playback itself rather than only
+                 * opening the panel.
+                 */
+                if (audioRef.current?.paused) toggle();
+              }}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
