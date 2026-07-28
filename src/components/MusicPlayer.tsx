@@ -70,6 +70,7 @@ export function MusicPlayer() {
 
     const attempt = () => {
       if (autoTried.current || userStopped.current) return;
+      el.muted = false;
       el.play()
         .then(() => {
           autoTried.current = true;
@@ -85,7 +86,19 @@ export function MusicPlayer() {
       attempt();
     }
 
-    attempt(); // step 1, straight away
+    /*
+     * Every browser allows *muted* autoplay unconditionally. Starting the
+     * track muted the instant the page loads means it is already decoded
+     * and playing in the background, so the first real gesture only has to
+     * flip `muted` off — instant, instead of also starting playback cold
+     * (which can stall for a beat on a slow connection).
+     */
+    el.muted = true;
+    el.play().catch(() => {
+      /* Even muted autoplay can be refused in rare embedding contexts —
+         the gesture-triggered attempt below still covers that case. */
+    });
+
     EVENTS.forEach((ev) => window.addEventListener(ev, onGesture, { passive: true }));
     return stopListening;
   }, []);
@@ -115,6 +128,7 @@ export function MusicPlayer() {
     if (el.paused) {
       userStopped.current = false;
       autoTried.current = true;
+      el.muted = false;
       el.play().catch(() => setPlaying(false));
     } else {
       userStopped.current = true;
