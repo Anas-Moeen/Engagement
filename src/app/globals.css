@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --edge: 1.25rem;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    /* `clip` rather than `hidden`: hidden makes the element a scroll container,
+       and Chrome on Android then lets oversized decorative elements create a
+       real horizontal scroll area that fixed-position layers do not follow —
+       which shifts the whole page sideways. Firefox clips it instead, which is
+       why the same build looked correct there. */
+    overflow-x: clip;
+  }
+
+  body {
+    @apply bg-paper text-forest font-sans antialiased;
+    overflow-x: clip;
+    max-width: 100vw;
+    text-rendering: optimizeLegibility;
+    /* Arabic reads better with a fraction more word spacing at small sizes. */
+    word-spacing: 0.02em;
+  }
+
+  /* Arabic must never be letter-spaced — it severs the cursive joins. The
+     original design leaned on tracking for its small labels, so that job moves
+     to size, weight and colour instead. */
+  [lang='ar'],
+  [lang='ar'] * {
+    letter-spacing: 0 !important;
+  }
+
+  /* Latin fragments inside RTL text: phone numbers, clock values, URLs. */
+  .ltr {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  ::selection {
+    @apply bg-gold/30 text-forest-deep;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-gold ring-offset-2 ring-offset-paper rounded-sm;
+  }
+
+  /* Arabic descenders — the bowl of س ش, the tail of ج ح خ ع غ — drop well
+     below the baseline in Amiri, further than most Latin faces. A line-height
+     tuned for Latin crops them, and any ancestor with overflow-hidden then
+     cuts whatever spills out. Headings therefore get generous leading, and
+     large display text gets a little padding under it as well. */
+  h1, h2, h3 {
+    line-height: 1.5;
+    padding-bottom: 0.06em;
+  }
+
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-[68rem] px-[var(--edge)] sm:px-8;
+  }
+
+  .eyebrow {
+    @apply text-eyebrow font-medium text-gold-deep;
+  }
+
+  .rule {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-gold/45 to-transparent;
+  }
+
+  .card {
+    @apply rounded-card border border-forest/[0.07] bg-white/70 shadow-card backdrop-blur-xl;
+  }
+
+  .card-dark {
+    @apply rounded-card border border-gold/15 bg-white/[0.05] shadow-card backdrop-blur-xl;
+  }
+
+  /* The hero pane sits over moving video, so it needs deeper blur and a
+     brighter top edge to read as glass rather than a grey box. */
+  .glass {
+    @apply rounded-[2rem] border border-white/15 shadow-lift backdrop-blur-2xl;
+    background-image: linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.13) 0%,
+      rgba(255, 255, 255, 0.04) 45%,
+      rgba(255, 255, 255, 0.07) 100%
+    );
+  }
+
+  .gold-text {
+    @apply bg-gold-leaf bg-clip-text text-transparent;
+    background-size: 200% auto;
+  }
+
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-pill px-6 py-3.5
+           text-[0.9375rem] font-medium transition-all duration-300 active:scale-[0.97];
+  }
+
+  .btn-gold {
+    @apply btn bg-gold-leaf text-forest-deep shadow-card hover:shadow-lift;
+    background-size: 200% auto;
+  }
+
+  .btn-outline {
+    @apply btn border border-forest/15 bg-white/60 text-forest backdrop-blur
+           hover:border-gold/60 hover:bg-white;
+  }
+
+  .btn-ghost-light {
+    @apply btn border border-gold/25 bg-white/5 text-cream backdrop-blur hover:border-gold/60 hover:bg-white/10;
+  }
+
+  .field {
+    @apply w-full rounded-2xl border border-forest/[0.12] bg-white/80 px-4 py-3.5 text-[1rem]
+           text-forest placeholder:text-forest/35 transition-colors
+           focus:border-gold focus:bg-white focus:outline-none;
+  }
+
+  /* Gold volume slider, styled for both engines. Kept LTR: a volume track
+     that fills right-to-left confuses everyone, Arabic readers included. */
+  .slider {
+    @apply h-1 w-full cursor-pointer appearance-none rounded-full bg-cream/20;
+    direction: ltr;
+  }
+  .slider::-webkit-slider-thumb {
+    @apply h-3.5 w-3.5 appearance-none rounded-full bg-gold shadow-md transition-transform;
+  }
+  .slider:active::-webkit-slider-thumb {
+    transform: scale(1.25);
+  }
+  .slider::-moz-range-thumb {
+    @apply h-3.5 w-3.5 rounded-full border-0 bg-gold shadow-md;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
