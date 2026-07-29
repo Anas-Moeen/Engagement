@@ -227,7 +227,7 @@ export const seo = {
   locale: 'ar_SA',
   title: `${couple.bride.first} و ${couple.groom.first} — حفل الخطوبة`,
   /** أقل من ١١٠ حرفاً — واتساب وتيليجرام يقصّان ما زاد */
-  description: `يسعدنا حضوركم حفل خطوبتنا يوم السبت ٨ آب ٢٠٢٦ في ${event.venue.name} بعمان.`,
+  description: `يسعدنا حضوركم حفل خطوبتنا يوم السبت ٨ آب ٢٠٢٦ في ${event.venue.name} - عمان.`,
   shareMessage: `دعوة حضور حفل خطوبة ${couple.bride.first} و ${couple.groom.first} — السبت ٨ آب ٢٠٢٦:`,
   ogImageAlt: `دعوة حفل خطوبة ${couple.bride.first} و ${couple.groom.first}`,
   keywords: [
