@@ -131,6 +131,10 @@ export const ui = {
     time: 'الوقت',
     place: 'المكان',
     addToCalendar: 'أضف إلى التقويم',
+    calendarOther: 'تقويم آخر؟',
+    calendarGoogle: 'جوجل',
+    calendarOutlook: 'أوتلوك',
+    calendarApple: 'آبل (ICS)',
   },
 
   countdown: {

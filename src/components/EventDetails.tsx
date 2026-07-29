@@ -1,6 +1,6 @@
 import { CalendarPlus, Clock, MapPin } from 'lucide-react';
-import { event, seo, ui } from '@/data/content';
-import { calendarUrl } from '@/lib/utils';
+import { event, ui } from '@/data/content';
+import { AddToCalendar } from './AddToCalendar';
 import { Reveal } from './ui/Reveal';
 import { Section } from './ui/Section';
 
@@ -10,14 +10,6 @@ export function EventDetails() {
     { icon: Clock, label: ui.details.time, value: event.timeLabel, sub: null },
     { icon: MapPin, label: ui.details.place, value: event.venue.name, sub: event.venue.hall },
   ];
-
-  const addToCalendar = calendarUrl({
-    title: seo.title,
-    details: seo.description,
-    location: `${event.venue.name}, ${event.venue.address}`,
-    startsAt: event.startsAt,
-    endsAt: event.endsAt,
-  });
 
   return (
     <Section
@@ -44,10 +36,9 @@ export function EventDetails() {
         </Reveal>
 
         <Reveal index={1}>
-          <a href={addToCalendar} target="_blank" rel="noopener noreferrer" className="btn-outline mt-5 w-full">
-            <CalendarPlus size={16} strokeWidth={1.75} aria-hidden />
-            {ui.details.addToCalendar}
-          </a>
+          <div className="mt-5">
+            <AddToCalendar />
+          </div>
         </Reveal>
       </div>
     </Section>
