@@ -169,7 +169,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6, transition: { duration: 0.5, ease: EASE } }}
             transition={{ delay: 2, duration: 1, ease: EASE }}
-            className="absolute inset-x-0 bottom-6 z-10 mx-auto flex w-fit flex-col items-center gap-2 px-4 py-3 text-gold-soft transition-colors hover:text-gold focus-visible:text-gold sm:bottom-9"
+            className="fixed inset-x-0 bottom-[max(1.5rem,calc(env(safe-area-inset-bottom)+0.75rem))] z-40 mx-auto flex w-fit flex-col items-center gap-2 px-4 py-3 text-gold-soft transition-colors hover:text-gold focus-visible:text-gold"
             aria-label={ui.hero.scroll}
           >
             <motion.span
