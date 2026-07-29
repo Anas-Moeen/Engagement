@@ -1,8 +1,15 @@
 'use client';
 
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { couple, event, ui } from '@/data/content';
 import { Monogram } from './ui/Monogram';
 import { Ornament } from './ui/Ornament';
@@ -28,6 +35,11 @@ export function Hero() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const y = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : -70]);
   const opacity = useTransform(scrollYProgress, [0, 0.75], [1, reduced ? 1 : 0]);
+
+  /* The scroll hint should read as a nudge, not a fixture — it disappears
+     the moment the visitor actually starts scrolling. */
+  const [showScrollHint, setShowScrollHint] = useState(true);
+  useMotionValueEvent(scrollYProgress, 'change', (v) => setShowScrollHint(v < 0.035));
 
   return (
     <section
@@ -143,17 +155,29 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
-      <motion.a
-        href="#details"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.2, duration: 1 }}
-        className="absolute bottom-7 flex flex-col items-center gap-2 text-cream/40 transition-colors hover:text-gold"
-        aria-label={ui.hero.scroll}
-      >
-        <span className="text-[0.75rem]">{ui.hero.scroll}</span>
-        <ChevronDown size={16} strokeWidth={1.5} className="animate-float" />
-      </motion.a>
+      <AnimatePresence>
+        {showScrollHint && (
+          <motion.a
+            href="#details"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, transition: { duration: 0.45, ease: EASE } }}
+            transition={{ delay: 2.2, duration: 1, ease: EASE }}
+            className="group absolute inset-x-0 bottom-6 mx-auto flex w-fit flex-col items-center gap-2.5 text-cream/45 transition-colors hover:text-gold focus-visible:text-gold sm:bottom-8"
+            aria-label={ui.hero.scroll}
+          >
+            <motion.span
+              aria-hidden
+              animate={reduced ? undefined : { y: [0, 7, 0] }}
+              transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/25 backdrop-blur-sm transition-colors group-hover:border-gold/60"
+            >
+              <ChevronDown size={16} strokeWidth={1.5} />
+            </motion.span>
+            <span className="text-[0.75rem] font-light">{ui.hero.scroll}</span>
+          </motion.a>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
