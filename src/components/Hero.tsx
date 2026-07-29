@@ -1,15 +1,8 @@
 'use client';
 
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { couple, event, ui } from '@/data/content';
 import { Monogram } from './ui/Monogram';
 import { Ornament } from './ui/Ornament';
@@ -36,10 +29,22 @@ export function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : -70]);
   const opacity = useTransform(scrollYProgress, [0, 0.75], [1, reduced ? 1 : 0]);
 
-  /* The scroll hint should read as a nudge, not a fixture — it disappears
-     the moment the visitor actually starts scrolling. */
+  /* The scroll hint should read as a nudge, not a fixture — it disappears the
+     moment the visitor actually starts scrolling. Tracked off the real window
+     scroll position rather than the hero's own scroll-linked motion values,
+     which can fire from layout shifts (video load, mobile address-bar
+     collapse) that have nothing to do with the visitor scrolling. */
   const [showScrollHint, setShowScrollHint] = useState(true);
-  useMotionValueEvent(scrollYProgress, 'change', (v) => setShowScrollHint(v < 0.035));
+  useEffect(() => {
+    const onScroll = () => setShowScrollHint(window.scrollY < 24);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const scrollToNext = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <section
@@ -159,22 +164,25 @@ export function Hero() {
         {showScrollHint && (
           <motion.a
             href="#details"
-            initial={{ opacity: 0, y: -8 }}
+            onClick={scrollToNext}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, transition: { duration: 0.45, ease: EASE } }}
-            transition={{ delay: 2.2, duration: 1, ease: EASE }}
-            className="group absolute inset-x-0 bottom-6 mx-auto flex w-fit flex-col items-center gap-2.5 text-cream/45 transition-colors hover:text-gold focus-visible:text-gold sm:bottom-8"
+            exit={{ opacity: 0, y: 6, transition: { duration: 0.5, ease: EASE } }}
+            transition={{ delay: 2, duration: 1, ease: EASE }}
+            className="absolute inset-x-0 bottom-6 z-10 mx-auto flex w-fit flex-col items-center gap-2 px-4 py-3 text-gold-soft transition-colors hover:text-gold focus-visible:text-gold sm:bottom-9"
             aria-label={ui.hero.scroll}
           >
             <motion.span
               aria-hidden
-              animate={reduced ? undefined : { y: [0, 7, 0] }}
-              transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/25 backdrop-blur-sm transition-colors group-hover:border-gold/60"
+              animate={reduced ? undefined : { y: [0, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              className="[filter:drop-shadow(0_2px_6px_rgba(7,24,18,0.6))_drop-shadow(0_0_12px_rgba(223,200,148,0.55))]"
             >
-              <ChevronDown size={16} strokeWidth={1.5} />
+              <ChevronDown size={34} strokeWidth={1.75} />
             </motion.span>
-            <span className="text-[0.75rem] font-light">{ui.hero.scroll}</span>
+            <span className="text-[0.8125rem] font-light [text-shadow:0_1px_4px_rgba(7,24,18,0.7)]">
+              {ui.hero.scroll}
+            </span>
           </motion.a>
         )}
       </AnimatePresence>
