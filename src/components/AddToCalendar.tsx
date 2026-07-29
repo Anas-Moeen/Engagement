@@ -3,7 +3,13 @@
 import { CalendarPlus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { event, seo, ui } from '@/data/content';
-import { calendarUrl, detectCalendarPlatform, outlookCalendarUrl, type CalendarPlatform } from '@/lib/utils';
+import {
+  androidCalendarIntentUrl,
+  calendarUrl,
+  detectCalendarPlatform,
+  outlookCalendarUrl,
+  type CalendarPlatform,
+} from '@/lib/utils';
 
 const ICS_HREF = '/calendar.ics';
 
@@ -26,13 +32,20 @@ export function AddToCalendar() {
   };
   const google = calendarUrl(eventOpts);
   const outlook = outlookCalendarUrl(eventOpts);
+  const android = androidCalendarIntentUrl({ ...eventOpts, fallbackUrl: google });
 
   /* Apple devices get the .ics served inline — Safari opens its native
-     "Add Event" sheet directly, no sign-in, no download step. Everyone else
-     gets Google Calendar prefilled, since Android is virtually always
-     already signed into a Google account and desktop users overwhelmingly
-     have a Google account too; the link below covers the rest. */
-  const primary = platform === 'apple' ? { href: ICS_HREF, external: false } : { href: google, external: true };
+     "Add Event" sheet directly, no sign-in, no download step. Android gets
+     an intent: link that opens the device's own calendar app on its "new
+     event" screen the same way — also no sign-in, no browser tab. Desktop
+     falls back to Google Calendar, prefilled, one click; the row below
+     covers everyone that default doesn't fit. */
+  const primary =
+    platform === 'apple'
+      ? { href: ICS_HREF, external: false }
+      : platform === 'android'
+        ? { href: android, external: false }
+        : { href: google, external: true };
 
   return (
     <div>
