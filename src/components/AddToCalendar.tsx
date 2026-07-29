@@ -3,13 +3,7 @@
 import { CalendarPlus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { event, seo, ui } from '@/data/content';
-import {
-  androidCalendarIntentUrl,
-  calendarUrl,
-  detectCalendarPlatform,
-  outlookCalendarUrl,
-  type CalendarPlatform,
-} from '@/lib/utils';
+import { calendarUrl, detectCalendarPlatform, outlookCalendarUrl, type CalendarPlatform } from '@/lib/utils';
 
 const ICS_HREF = '/calendar.ics';
 
@@ -32,20 +26,22 @@ export function AddToCalendar() {
   };
   const google = calendarUrl(eventOpts);
   const outlook = outlookCalendarUrl(eventOpts);
-  const android = androidCalendarIntentUrl({ ...eventOpts, fallbackUrl: google });
 
-  /* Apple devices get the .ics served inline — Safari opens its native
-     "Add Event" sheet directly, no sign-in, no download step. Android gets
-     an intent: link that opens the device's own calendar app on its "new
-     event" screen the same way — also no sign-in, no browser tab. Desktop
-     falls back to Google Calendar, prefilled, one click; the row below
-     covers everyone that default doesn't fit. */
+  /* Apple and Android both get the .ics served inline. On iOS/macOS Safari
+     that opens the native "Add Event" sheet directly. Android's own
+     `intent:`-based approach (opening the calendar app's insert screen
+     directly, no download) looks appealing but is unreliable on Android 11+:
+     Chrome's package-visibility restrictions mean it frequently can't see an
+     installed calendar app to hand the intent to, silently falling back to a
+     Google-sign-in page instead — worse than just offering the file. The
+     .ics download requires an extra tap to open it, but works every time,
+     on every calendar app, with no sign-in. Desktop falls back to Google
+     Calendar, prefilled, one click; the row below covers everyone that
+     default doesn't fit. */
   const primary =
-    platform === 'apple'
+    platform === 'apple' || platform === 'android'
       ? { href: ICS_HREF, external: false }
-      : platform === 'android'
-        ? { href: android, external: false }
-        : { href: google, external: true };
+      : { href: google, external: true };
 
   return (
     <div>

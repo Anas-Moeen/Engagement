@@ -55,32 +55,6 @@ export function calendarUrl(opts: CalendarEvent) {
   return `https://calendar.google.com/calendar/render?${params}`;
 }
 
-/**
- * Android intent URI that opens the device's own calendar app directly on
- * its "new event" editor — the native equivalent of the iOS .ics sheet, with
- * no Google sign-in and no browser tab. Chrome for Android intercepts
- * `intent:` links before navigation and dispatches them as a real Android
- * Intent (`ACTION_INSERT` + the calendar-event MIME type), which every
- * calendar app — stock AOSP Calendar, Google Calendar, Samsung Calendar —
- * registers a handler for. `S.browser_fallback_url` is a Chrome-specific
- * extra: if no app can handle the intent (essentially never happens, but a
- * stripped-down ROM could), Chrome opens that URL instead of failing silently.
- */
-export function androidCalendarIntentUrl(opts: CalendarEvent & { fallbackUrl: string }) {
-  const params = [
-    'action=android.intent.action.INSERT',
-    'category=android.intent.category.DEFAULT',
-    'type=vnd.android.cursor.item/event',
-    `S.title=${encodeURIComponent(opts.title)}`,
-    `S.eventLocation=${encodeURIComponent(opts.location)}`,
-    `S.description=${encodeURIComponent(opts.details)}`,
-    `l.beginTime=${new Date(opts.startsAt).getTime()}`,
-    `l.endTime=${new Date(opts.endsAt).getTime()}`,
-    `S.browser_fallback_url=${encodeURIComponent(opts.fallbackUrl)}`,
-  ].join(';');
-  return `intent:#Intent;${params};end`;
-}
-
 /** Outlook.com web compose link — covers Outlook/Hotmail/Microsoft 365 users. */
 export function outlookCalendarUrl(opts: CalendarEvent) {
   const params = new URLSearchParams({

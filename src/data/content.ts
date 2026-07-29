@@ -134,7 +134,7 @@ export const ui = {
     calendarOther: 'تقويم آخر؟',
     calendarGoogle: 'جوجل',
     calendarOutlook: 'أوتلوك',
-    calendarApple: 'آبل (ICS)',
+    calendarApple: 'ملف تقويم (ICS)',
   },
 
   countdown: {
