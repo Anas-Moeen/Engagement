@@ -22,8 +22,10 @@ function diff(target: number): TimeLeft {
 }
 
 /**
- * Ticks once per second. Returns `null` until mounted so the server-rendered
- * markup and the first client render match — otherwise hydration mismatches.
+ * Ticks once per second, indefinitely — even past zero, so callers can keep
+ * deriving state (e.g. "event ended") off `Date.now()` without a refresh.
+ * Returns `null` until mounted so the server-rendered markup and the first
+ * client render match — otherwise hydration mismatches.
  */
 export function useCountdown(isoDate: string) {
   const [left, setLeft] = useState<TimeLeft | null>(null);
@@ -33,9 +35,7 @@ export function useCountdown(isoDate: string) {
     setLeft(diff(target));
 
     const id = window.setInterval(() => {
-      const next = diff(target);
-      setLeft(next);
-      if (next.total === 0) window.clearInterval(id);
+      setLeft(diff(target));
     }, 1000);
 
     return () => window.clearInterval(id);

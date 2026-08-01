@@ -142,6 +142,7 @@ export const ui = {
     minutes: 'دقيقة',
     seconds: 'ثانية',
     today: 'اليوم هو الموعد',
+    ended: 'انتهى الحفل',
     remaining: 'الوقت المتبقي حتى بدء الحفل',
   },
 

@@ -18,6 +18,9 @@ export function Countdown() {
   const from = new Date(ANNOUNCED).getTime();
   const progress = left ? Math.min(1, Math.max(0, 1 - left.total / (target - from))) : 0;
   const arrived = left?.total === 0;
+  /* `left` re-ticks every second even past zero, so this stays accurate
+     without a page refresh once the event's end time has also passed. */
+  const ended = arrived && Date.now() >= new Date(event.endsAt).getTime();
 
   /* Explicit cells rather than a "hh : mm : ss" string — in RTL a single
      colon-joined string gets reordered by the bidi algorithm. */
@@ -51,7 +54,9 @@ export function Countdown() {
         </svg>
 
         <div className="text-center">
-          {arrived ? (
+          {ended ? (
+            <p className="font-display text-3xl text-cream">{ui.countdown.ended}</p>
+          ) : arrived ? (
             <p className="font-display text-3xl text-cream">{ui.countdown.today}</p>
           ) : (
             <>

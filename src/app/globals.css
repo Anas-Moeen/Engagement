@@ -45,6 +45,16 @@
     unicode-bidi: isolate;
   }
 
+  /* Mobile nav lets its section pills scroll horizontally as a fallback on
+     very narrow screens, without showing a scrollbar across the header. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   ::selection {
     @apply bg-gold/30 text-forest-deep;
   }

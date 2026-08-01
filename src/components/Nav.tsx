@@ -30,25 +30,27 @@ export function Nav() {
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-x-0 top-0 z-40 border-b border-forest/[0.07] bg-paper/85 backdrop-blur-xl"
         >
-          <div className="shell flex h-14 items-center justify-between">
-            <a href="#top" className="font-display text-lg text-forest" aria-label={ui.nav.toTop}>
+          <div className="shell flex h-14 items-center gap-3 sm:gap-6">
+            <a
+              href="#top"
+              className="shrink-0 font-display text-lg text-forest"
+              aria-label={ui.nav.toTop}
+            >
               {couple.monogram}
             </a>
 
-            <div className="flex items-center gap-6">
-              <ul className="hidden gap-6 sm:flex">
-                {links.map((link) => (
-                  <li key={link.href}>
-                    <a
-                      href={link.href}
-                      className="text-[0.9375rem] text-forest/60 transition-colors hover:text-gold-deep"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <ul className="no-scrollbar flex min-w-0 flex-1 items-center justify-end gap-1 overflow-x-auto sm:flex-none sm:gap-6">
+              {links.map((link) => (
+                <li key={link.href} className="shrink-0">
+                  <a
+                    href={link.href}
+                    className="block whitespace-nowrap rounded-pill px-2.5 py-1.5 text-[0.8125rem] text-forest/60 transition-colors hover:text-gold-deep sm:px-0 sm:py-0 sm:text-[0.9375rem]"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </motion.nav>
       )}
