@@ -1,6 +1,5 @@
 import { CalendarPlus, Clock, MapPin } from 'lucide-react';
 import { event, ui } from '@/data/content';
-import { AddToCalendar } from './AddToCalendar';
 import { Reveal } from './ui/Reveal';
 import { Section } from './ui/Section';
 
@@ -32,12 +31,6 @@ export function EventDetails() {
                 </div>
               ))}
             </dl>
-          </div>
-        </Reveal>
-
-        <Reveal index={1}>
-          <div className="mt-5">
-            <AddToCalendar />
           </div>
         </Reveal>
       </div>
