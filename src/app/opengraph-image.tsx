@@ -65,11 +65,11 @@ export default async function OpengraphImage() {
         {/* Each Arabic run sits in its own box — satori's bidi handling is
             safest when a line contains a single direction. */}
         <div style={{ display: 'flex', fontSize: 100, color: '#F7F1E5' }}>
-          {couple.bride.first}
+          {couple.groom.first}
         </div>
         <div style={{ display: 'flex', fontSize: 60, color: '#C8A96A', margin: '4px 0' }}>و</div>
         <div style={{ display: 'flex', fontSize: 100, color: '#F7F1E5' }}>
-          {couple.groom.first}
+          {couple.bride.first}
         </div>
 
         <div

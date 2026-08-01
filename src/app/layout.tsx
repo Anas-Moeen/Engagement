@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   description: seo.description,
   keywords: [...seo.keywords],
   applicationName: seo.title,
-  authors: [{ name: `${couple.bride.full} و ${couple.groom.full}` }],
+  authors: [{ name: `${couple.groom.full} و ${couple.bride.full}` }],
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',

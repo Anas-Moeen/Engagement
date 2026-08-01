@@ -125,9 +125,9 @@ export function Hero() {
               animate="show"
               className="mt-6 pb-[0.14em] font-display text-display-md font-normal"
             >
-              <span className="block">{couple.bride.first}</span>
-              <span className="my-1 block text-[0.4em] text-gold">{ui.hero.and}</span>
               <span className="block">{couple.groom.first}</span>
+              <span className="my-1 block text-[0.4em] text-gold">{ui.hero.and}</span>
+              <span className="block">{couple.bride.first}</span>
             </motion.h1>
 
             <motion.div

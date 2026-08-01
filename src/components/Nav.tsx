@@ -17,7 +17,7 @@ export function Nav() {
     { href: '#details', label: ui.nav.details },
     { href: '#timeline', label: ui.nav.program },
     { href: '#location', label: ui.nav.location },
-    { href: '#contact', label: ui.nav.details },
+    { href: '#contact', label: ui.nav.contact },
   ];
 
   return (

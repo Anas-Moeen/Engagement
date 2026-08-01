@@ -15,8 +15,8 @@ export const siteUrl = (
 /* ─────────────────────────── العروسان ─────────────────────────── */
 
 export const couple = {
-  bride: { first: ' أنس ', full: ' أنس ' },
-  groom: { first: ' آية ', full: ' آية ' },
+  bride: { first: 'آية', full: 'آية' },
+  groom: { first: 'أنس', full: 'أنس' },
   /** يظهر في الشعار والأيقونة */
   monogram: 'A & A',
 } as const;
@@ -119,6 +119,7 @@ export const ui = {
     details: 'التفاصيل',
     program: 'البرنامج',
     location: 'الموقع',
+    contact: 'تواصل',
     rsvp: 'تأكيد الحضور',
     toTop: 'العودة للأعلى',
   },
@@ -224,15 +225,15 @@ export const ui = {
 
 export const seo = {
   locale: 'ar_SA',
-  title: `${couple.bride.first} و ${couple.groom.first} — حفل الخطوبة`,
+  title: `${couple.groom.first} و ${couple.bride.first} — حفل الخطوبة`,
   /** أقل من ١١٠ حرفاً — واتساب وتيليجرام يقصّان ما زاد */
   description: `يسعدنا حضوركم حفل خطوبتنا يوم السبت ٨ آب ٢٠٢٦ في ${event.venue.name} - عمان.`,
-  shareMessage: `دعوة حضور حفل خطوبة ${couple.bride.first} و ${couple.groom.first} — السبت ٨ آب ٢٠٢٦:`,
-  ogImageAlt: `دعوة حفل خطوبة ${couple.bride.first} و ${couple.groom.first}`,
+  shareMessage: `دعوة حضور حفل خطوبة ${couple.groom.first} و ${couple.bride.first} — السبت ٨ آب ٢٠٢٦:`,
+  ogImageAlt: `دعوة حفل خطوبة ${couple.groom.first} و ${couple.bride.first}`,
   keywords: [
     'دعوة خطوبة',
     'حفل خطوبة',
-    `${couple.bride.first} و ${couple.groom.first}`,
+    `${couple.groom.first} و ${couple.bride.first}`,
     event.venue.name,
     'دعوة إلكترونية',
   ],

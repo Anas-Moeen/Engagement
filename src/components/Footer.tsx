@@ -9,9 +9,9 @@ export function Footer() {
         <Reveal><Monogram size={76} /></Reveal>
         <Reveal index={1}>
           <p className="mt-8 pb-[0.18em] font-display text-[1.75rem] leading-[1.85]">
-            {couple.bride.full}
-            <span className="mx-3 text-gold">و</span>
             {couple.groom.full}
+            <span className="mx-3 text-gold">و</span>
+            {couple.bride.full}
           </p>
         </Reveal>
         <Reveal index={2}>
