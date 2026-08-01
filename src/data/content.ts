@@ -15,8 +15,8 @@ export const siteUrl = (
 /* ─────────────────────────── العروسان ─────────────────────────── */
 
 export const couple = {
-  bride: { first: 'آية', full: 'آية' },
-  groom: { first: 'أنس', full: 'أنس' },
+  bride: { first: ' آية ', full: ' آية ' },
+  groom: { first: ' أنس ', full: ' أنس ' },
   /** يظهر في الشعار والأيقونة */
   monogram: 'A & A',
 } as const;
